@@ -3,6 +3,7 @@ package com.test.myspringboot.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.test.myspringboot.entity.User;
 import com.test.myspringboot.service.UserService;
+import com.test.myspringboot.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @RequestMapping(value = "/add")
     public User addUser(){
+        redisUtil.set("aaaaaaaaaaaa","aaaaaaaaaaaaa");
         User u = new User();
         u.setBirthday(new Date());
         u.setUserName("张三"+System.currentTimeMillis());
@@ -31,6 +35,7 @@ public class UserController {
         try {
             userService.insertSelective(u);
             LOG.info("插入用户成功");
+            LOG.info("获取到redis的值是{}",redisUtil.get("aaaaaaaaaaaa"));
         }catch (Exception e){
             LOG.error("插入用户异常",e);
         }
