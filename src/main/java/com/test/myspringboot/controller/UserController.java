@@ -2,6 +2,9 @@ package com.test.myspringboot.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.test.myspringboot.entity.User;
+import com.test.myspringboot.rabbitmq.producer.FanoutProducer;
+import com.test.myspringboot.rabbitmq.producer.StringProducer;
+import com.test.myspringboot.rabbitmq.producer.TopicProducer;
 import com.test.myspringboot.service.UserService;
 import com.test.myspringboot.util.RedisUtil;
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +26,12 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private StringProducer stringProducer;
+    @Autowired
+    private FanoutProducer fanoutProducer;
+    @Autowired
+    private TopicProducer topicProducer;
 
     @RequestMapping(value = "/add")
     public User addUser(){
@@ -40,6 +50,35 @@ public class UserController {
             LOG.error("插入用户异常",e);
         }
         return u;
+    }
+    @RequestMapping(value = "/sendString")
+    public String sendString(){
+        try {
+            stringProducer.sendString("张三");
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+    @RequestMapping(value = "/sendFanout")
+    public String sendFanout(){
+        try {
+            fanoutProducer.sendFanout("张三");
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+    @RequestMapping(value = "/sendTopic")
+    public String sendTopic(){
+        try {
+            topicProducer.topicTopic1Send("张三-A");
+            topicProducer.topicTopic2Send("张三-B");
+            topicProducer.topicTopic3Send("张三-C");
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
     }
 
 }
