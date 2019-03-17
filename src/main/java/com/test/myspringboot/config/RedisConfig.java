@@ -69,15 +69,5 @@ public class RedisConfig {
         template.setEnableTransactionSupport(true);
         return template;
     }
-    //第三步：定义事务管理bean，就是jdbc里面的transactionManager
-//    @Bean
-//    public PlatformTransactionManager transactionManager(DataSource dataSource) throws SQLException {
-//        return new DataSourceTransactionManager(dataSource);
-//    }
-
-//    @Bean
-//    public DataSource dataSource() {
-//        return DruidDataSourceBuilder.create().build();
-//    }
 
 }
