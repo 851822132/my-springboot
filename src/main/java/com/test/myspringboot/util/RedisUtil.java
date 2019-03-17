@@ -22,6 +22,8 @@ public class RedisUtil {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private RedisTemplate<String,Object> redisTransactionTemplate;
 
     //=============================common============================
     /**
@@ -100,6 +102,22 @@ public class RedisUtil {
         try {
             redisTemplate.opsForValue().set(key, value);
 //            redisTemplate.exec();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+    /**
+     * 注解事物-普通缓存放入
+     * @param key 键
+     * @param value 值
+     * @return true成功 false失败
+     */
+    public boolean setTranscation(String key,Object value) {
+        try {
+            redisTransactionTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

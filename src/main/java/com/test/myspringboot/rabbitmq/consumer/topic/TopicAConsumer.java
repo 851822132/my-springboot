@@ -36,12 +36,12 @@ public class TopicAConsumer {
             //处理业务逻辑
             //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会在发
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
-            LOG.info("处理string消息成功");
+            LOG.info("处理TopicAConsumer消息成功");
         } catch (Exception e) {
-            LOG.error("处理string消息异常",e);
+            LOG.error("处理TopicAConsumer消息异常",e);
             //丢弃这条消息
             //channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
-            LOG.info("处理string消息失败");
+            LOG.info("处理TopicAConsumer消息失败");
         }
     }
 }

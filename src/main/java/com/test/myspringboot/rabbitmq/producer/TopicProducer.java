@@ -4,6 +4,8 @@ import com.test.myspringboot.config.RabbitConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,7 @@ import java.util.Date;
  * @Description:
  */
 @Component
-public class TopicProducer {
+public class TopicProducer{
     private static final Logger LOG = LoggerFactory.getLogger(TopicProducer.class);
 
     @Autowired
@@ -50,6 +52,5 @@ public class TopicProducer {
         // 这条信息将会被topic.b、topic.c接收
         rabbitTemplate.convertAndSend("topicExchange", "topic.my.z", dateString);
     }
-
 
 }

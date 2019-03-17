@@ -35,7 +35,7 @@ public class UserController {
 
     @RequestMapping(value = "/add")
     public User addUser(){
-        redisUtil.set("aaaaaaaaaaaa","aaaaaaaaaaaaa");
+//        redisUtil.set("aaaaaaaaaaaa","aaaaaaaaaaaaa");
         User u = new User();
         u.setBirthday(new Date());
         u.setUserName("张三"+System.currentTimeMillis());
@@ -45,7 +45,7 @@ public class UserController {
         try {
             userService.insertSelective(u);
             LOG.info("插入用户成功");
-            LOG.info("获取到redis的值是{}",redisUtil.get("aaaaaaaaaaaa"));
+//            LOG.info("获取到redis的值是{}",redisUtil.get("aaaaaaaaaaaa"));
         }catch (Exception e){
             LOG.error("插入用户异常",e);
         }
@@ -75,6 +75,24 @@ public class UserController {
             topicProducer.topicTopic1Send("张三-A");
             topicProducer.topicTopic2Send("张三-B");
             topicProducer.topicTopic3Send("张三-C");
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+    @RequestMapping(value = "/test1")
+    public String test1(){
+        try {
+            userService.test1();
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+    @RequestMapping(value = "/test2")
+    public String test2(){
+        try {
+            userService.test2();
         }catch (Exception e){
             return "error";
         }
