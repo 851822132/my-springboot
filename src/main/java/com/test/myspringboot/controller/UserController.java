@@ -7,16 +7,24 @@ import com.test.myspringboot.rabbitmq.producer.StringProducer;
 import com.test.myspringboot.rabbitmq.producer.TopicProducer;
 import com.test.myspringboot.service.UserService;
 import com.test.myspringboot.util.RedisUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ *  swagger2地址:http://localhost:8083/swagger-ui.html
+ */
+@Api("用户接口")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -33,8 +41,10 @@ public class UserController {
     @Autowired
     private TopicProducer topicProducer;
 
-    @RequestMapping(value = "/add")
-    public User addUser(){
+    @ApiOperation(value = "添加用户",notes = "添加用户测试")
+    @ApiImplicitParam(name = "id",value = "用户id",required = false,dataType = "String")
+    @RequestMapping(value = "/add",method = {RequestMethod.POST ,RequestMethod.GET})
+    public User addUser(String id){
 //        redisUtil.set("aaaaaaaaaaaa","aaaaaaaaaaaaa");
         User u = new User();
         u.setBirthday(new Date());
@@ -99,4 +109,14 @@ public class UserController {
         return "ok";
     }
 
+    @RequestMapping(value = "/list")
+    public List<User> list(){
+        try {
+            List<User> users = userService.selectAllUser();
+            return users.parallelStream().filter(u->u.getSex().equals("男")).collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("获取用户异常",e);
+        }
+        return new ArrayList<>();
+    }
 }
