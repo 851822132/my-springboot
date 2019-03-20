@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -44,5 +47,10 @@ public class UserServiceImpl implements UserService {
         System.out.println(redisTransactionTemplate.opsForValue().get("bbbbbbbbbbbb"));
         redisTransactionTemplate.opsForValue().set("bbbbbbbbbbbb","dddddddddddddddddd");
         System.out.println(redisTransactionTemplate.opsForValue().get("bbbbbbbbbbbb"));
+    }
+
+    @Override
+    public List<User> selectAllUser() {
+        return userMapper.selectAll(new HashMap<>());
     }
 }

@@ -17,12 +17,12 @@ public class RabbitTopicConfig {
 
     @Bean
     public Queue topiocA() {
-        return new Queue("topic.a");
+        return new Queue("topic.a",true);
     }
 
     @Bean
     public Queue topicB() {
-        return new Queue("topic.b");
+        return new Queue("topic.b",true);
     }
 
     @Bean
