@@ -2,6 +2,7 @@ package com.test.myspringboot.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.test.myspringboot.entity.User;
+import com.test.myspringboot.rabbitmq.producer.DlxProducer;
 import com.test.myspringboot.rabbitmq.producer.FanoutProducer;
 import com.test.myspringboot.rabbitmq.producer.StringProducer;
 import com.test.myspringboot.rabbitmq.producer.TopicProducer;
@@ -40,6 +41,8 @@ public class UserController {
     private FanoutProducer fanoutProducer;
     @Autowired
     private TopicProducer topicProducer;
+    @Autowired
+    private DlxProducer dlxProducer;
 
     @ApiOperation(value = "添加用户",notes = "添加用户测试")
     @ApiImplicitParam(name = "id",value = "用户id",required = false,dataType = "String")
@@ -65,6 +68,15 @@ public class UserController {
     public String sendString(){
         try {
             stringProducer.sendString("张三");
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+    @RequestMapping(value = "/sendDlx")
+    public String sendDlx(){
+        try {
+            dlxProducer.sendString("张三");
         }catch (Exception e){
             return "error";
         }
