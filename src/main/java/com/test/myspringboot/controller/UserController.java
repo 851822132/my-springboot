@@ -61,7 +61,8 @@ public class UserController {
         }
         return u;
     }
-    @RequestMapping(value = "/sendString")
+    @ApiOperation(value = "直接发送消息，点对点")
+    @RequestMapping(value = "/sendString",method = {RequestMethod.GET})
     public String sendString(){
         try {
             stringProducer.sendString("张三");
@@ -70,6 +71,7 @@ public class UserController {
         }
         return "ok";
     }
+    @ApiOperation(value = "广播模式",notes = "广播到所有的queue")
     @RequestMapping(value = "/sendFanout")
     public String sendFanout(){
         try {
